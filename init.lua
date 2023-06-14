@@ -20,6 +20,7 @@ require('packer').startup(function()
     -- Autocompletion
     use 'hrsh7th/nvim-cmp' -- Autocompletion plugin
     use 'hrsh7th/cmp-nvim-lsp' -- LSP source for nvim-cmp
+    use 'hrsh7th/cmp-nvim-lua'
     use 'saadparwaiz1/cmp_luasnip' -- Snippets source for nvim-cmp
     use 'L3MON4D3/LuaSnip' -- Snippets plugin
 
@@ -43,11 +44,14 @@ require('packer').startup(function()
     }
 
     use 'windwp/nvim-autopairs'
+    use 'lukas-reineke/indent-blankline.nvim'
     -- Copilot
     use 'github/copilot.vim'
+
     -- Themes
     use 'overcache/NeoSolarized'
     use { "catppuccin/nvim", as = "catppuccin" }
+    use {'akinsho/bufferline.nvim', tag = "*", requires = {'nvim-tree/nvim-web-devicons'} }
 end)
 
 ---------------------------------
@@ -127,8 +131,19 @@ require('nvim-treesitter.configs').setup({
         additional_vim_regex_highlighting = false,
     },
 })
+
 require('nvim-treesitter').setup({
 })
+
+vim.api.nvim_create_autocmd({'BufEnter', 'BufAdd', 'BufNew', 'BufNewFile', 'BufWinEnter'}, {
+    group = vim.api.nvim_create_augroup('TsFoldWorkaround', {}),
+    callback = function() 
+        vim.opt.foldmethod = 'expr'
+        vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+        vim.opt.foldenable = false
+    end
+})
+
 
 -- LSP
 local lspconfig = require('lspconfig')
@@ -199,7 +214,17 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
         vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+        vim.keymap.set('n', '<leader>sf', vim.lsp.buf.format, opts)
     end,
+})
+
+-- Format on save
+vim.api.nvim_create_autocmd('BufWritePre', {
+    buffer = buffer,
+    pattern = { "*.go", "*.rs" },
+    callback = function() 
+        vim.lsp.buf.format { async = false }
+    end
 })
 
 -- luasnip setup
@@ -258,5 +283,39 @@ vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, {})
 vim.cmd("set background=dark")
 vim.cmd("colorscheme catppuccin")
 
-require('lualine').setup({})
+require('lualine').setup({
+    sections = {
+        lualine_c = {
+            {
+                'filename',
+                file_status = true,
+                path = 1,
+            }
+        }
+    }
+})
 require('nvim-autopairs').setup({})
+
+-- vim.opt.list = true
+-- vim.opt.listchars:append "space:⋅"
+-- vim.opt.listchars:append "eol:↴"
+require('indent_blankline').setup({
+    show_current_context = true,
+    show_current_context_start = true,
+    show_end_of_line = true,
+    space_char_blankline = " ",
+})
+
+
+require('bufferline').setup({
+    options = {
+        diagnostics = "nvim_lsp",
+        offsets = {{ -- Left for nvim tree
+            filetype = "NvimTree",
+            text = "File Explorer",
+            highlight = "Directory",
+            text_align = "left",
+        }},
+        separator_style = "slant",
+    }
+})
