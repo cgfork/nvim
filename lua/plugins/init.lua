@@ -125,6 +125,15 @@ local plugins_to_install = {
         "simrat39/rust-tools.nvim",
     },
     {
+        "saecki/crates.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        config = function()
+            require("crates").setup({})
+        end,
+    },
+    {
         "ray-x/go.nvim",
         dependencies = {
             "ray-x/guihua.lua",
