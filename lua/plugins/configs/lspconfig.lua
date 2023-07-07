@@ -25,9 +25,9 @@ lspconfig.lua_ls.setup {
     },
 }
 
-lspconfig.gopls.setup{
-    cmd = {"gopls", "serve"},
-    filetypes = {"go", "gomod"},
+lspconfig.gopls.setup {
+    cmd = { "gopls", "serve" },
+    filetypes = { "go", "gomod" },
     capabilities = capabilities,
     root_dir = lspconfigutil.root_pattern("go.work", "go.mod", ".git"),
     settings = {
@@ -39,6 +39,16 @@ lspconfig.gopls.setup{
             usePlaceholders = true,
             completeUnimported = true,
         },
+    },
+}
+
+lspconfig.golangci_lint_ls.setup {
+    cmd = { "golangci-lint-langserver" },
+    filetypes = { "go", "gomod" },
+    root_dir = lspconfigutil.root_pattern("go.work", "go.mod", ".git"),
+    init_options = {
+        command = { "golangci-lint", "run", "--enable-all", "--disable", "lll", "--out-format", "json",
+            "--issues-exit-code=1" },
     },
 }
 
@@ -91,8 +101,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 vim.api.nvim_create_autocmd('BufWritePre', {
     buffer = buffer,
     pattern = { "*.go", "*.rs", "*.lua" },
-    callback = function() 
+    callback = function()
         vim.lsp.buf.format { async = false }
     end
 })
-

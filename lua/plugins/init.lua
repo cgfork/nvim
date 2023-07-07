@@ -210,6 +210,7 @@ local plugins_to_install = {
         dependencies = {
             "nvim-tree/nvim-web-devicons",
         },
+        enabled = false,
         opts = {
             options = {
                 diagnostics = "nvim_lsp",
@@ -227,7 +228,6 @@ local plugins_to_install = {
     {
         "catppuccin/nvim",
         name = "catppuccin",
-        disabled = false,
         config = function()
             vim.cmd("set background=dark")
             vim.cmd("colorscheme catppuccin")
