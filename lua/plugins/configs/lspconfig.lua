@@ -4,6 +4,7 @@ local lspconfigutil = require('lspconfig/util')
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
+
 lspconfig.lua_ls.setup {
     capabilities = capabilities,
     settings = {
@@ -73,6 +74,18 @@ lspconfig.rust_analyzer.setup({
         }
     },
 })
+
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+    vim.lsp.handlers.hover, {
+        border = "single",
+    }
+)
+
+vim.lsp.handlers["textDocument/references"] = vim.lsp.with(
+    vim.lsp.handlers["textDocument/references"], {
+        border = "single",
+    }
+)
 
 vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
