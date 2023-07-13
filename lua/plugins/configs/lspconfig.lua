@@ -75,15 +75,25 @@ lspconfig.rust_analyzer.setup({
     },
 })
 
+vim.diagnostic.config({
+    virtual_text = false,
+    serverity_sort = true,
+    underline = true,
+    float = {
+        border = "rounded",
+        source = "always",
+    },
+})
+
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
     vim.lsp.handlers.hover, {
-        border = "single",
+        border = "rounded",
     }
 )
 
-vim.lsp.handlers["textDocument/references"] = vim.lsp.with(
-    vim.lsp.handlers["textDocument/references"], {
-        border = "single",
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+    vim.lsp.handlers.signature_help, {
+        border = "rounded",
     }
 )
 
