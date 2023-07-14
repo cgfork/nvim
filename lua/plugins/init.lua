@@ -122,6 +122,10 @@ local plugins_to_install = {
     },
 
     {
+        "kosayoda/nvim-lightbulb",
+    },
+
+    {
         "simrat39/rust-tools.nvim",
     },
     {

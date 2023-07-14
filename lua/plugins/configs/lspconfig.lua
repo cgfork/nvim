@@ -102,6 +102,36 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist)
 
+local function is_available(plugin)
+    local lazy_config_avail, lazy_config = pcall(require, "lazy.core.config")
+    return lazy_config_avail and lazy_config.spec.plugins[plugin] ~= nil
+end
+
+local lsp_declaration
+local lsp_definition
+local lsp_references
+local lsp_implementation
+if is_available "telescope.nvim" then
+    telescope_builtin = require("telescope.builtin")
+    lsp_declaration = function()
+        telescope_builtin.lsp_declaration()
+    end
+    lsp_definition = function()
+        telescope_builtin.lsp_definition()
+    end
+    lsp_references = function()
+        telescope_builtin.lsp_references()
+    end
+    lsp_implementation = function()
+        telescope_builtin.lsp_implementation()
+    end
+else
+    lsp_declaration = vim.lsp.buf.declaration
+    lsp_definition = vim.lsp.buf.definition
+    lsp_references = vim.lsp.buf.references
+    lsp_implementation = vim.lsp.buf.implementation
+end
+
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -109,11 +139,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(ev)
         vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
         local opts = { buffer = ev.buf }
-        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+        vim.keymap.set('n', 'gD', lsp_declaration, opts)
+        vim.keymap.set('n', 'gd', lsp_definition, opts)
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+        vim.keymap.set('n', 'gi', lsp_implementation, opts)
+        vim.keymap.set('n', 'gr', lsp_references, opts)
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
         vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
         vim.keymap.set('n', '<leader>sf', vim.lsp.buf.format, opts)
