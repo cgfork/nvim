@@ -126,6 +126,23 @@ local plugins_to_install = {
     },
 
     {
+        "stevearc/aerial.nvim",
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter",
+            "nvim-tree/nvim-web-devicons",
+        },
+        config = function()
+            require("aerial").setup({
+                on_attach = function(bufnr)
+                    vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', { buffer = bufnr })
+                    vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', { buffer = bufnr })
+                end
+            })
+            vim.keymap.set('n', '<leader>at', '<cmd>AerialToggle!<CR>')
+        end,
+    },
+
+    {
         "simrat39/rust-tools.nvim",
     },
     {
@@ -179,6 +196,7 @@ local plugins_to_install = {
             vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, {})
             vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, {})
             vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, {})
+            vim.keymap.set('n', '<leader>fs', telescope_builtin.grep_string, {})
             local actions = require("telescope.actions")
             require("telescope").setup {
                 defaults = {
