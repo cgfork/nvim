@@ -179,6 +179,20 @@ local plugins_to_install = {
             vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, {})
             vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, {})
             vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, {})
+            local actions = require("telescope.actions")
+            require("telescope").setup {
+                defaults = {
+                    mappings = {
+                        i = {
+                            ["<C-n>"] = actions.cycle_history_next,
+                            ["<C-p>"] = actions.cycle_history_prev,
+                            ["<C-j>"] = actions.move_selection_next,
+                            ["<C-k>"] = actions.move_selection_previous,
+                        },
+                        n = { q = actions.close },
+                    },
+                },
+            }
         end
     },
 

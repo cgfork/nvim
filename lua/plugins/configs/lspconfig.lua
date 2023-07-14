@@ -107,26 +107,21 @@ local function is_available(plugin)
     return lazy_config_avail and lazy_config.spec.plugins[plugin] ~= nil
 end
 
-local lsp_declaration
 local lsp_definition
 local lsp_references
 local lsp_implementation
 if is_available "telescope.nvim" then
-    telescope_builtin = require("telescope.builtin")
-    lsp_declaration = function()
-        telescope_builtin.lsp_declaration()
-    end
+    local telescope_builtin = require("telescope.builtin")
     lsp_definition = function()
-        telescope_builtin.lsp_definition()
+        telescope_builtin.lsp_definitions()
     end
     lsp_references = function()
         telescope_builtin.lsp_references()
     end
     lsp_implementation = function()
-        telescope_builtin.lsp_implementation()
+        telescope_builtin.lsp_implementations()
     end
 else
-    lsp_declaration = vim.lsp.buf.declaration
     lsp_definition = vim.lsp.buf.definition
     lsp_references = vim.lsp.buf.references
     lsp_implementation = vim.lsp.buf.implementation
@@ -139,7 +134,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(ev)
         vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
         local opts = { buffer = ev.buf }
-        vim.keymap.set('n', 'gD', lsp_declaration, opts)
+        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
         vim.keymap.set('n', 'gd', lsp_definition, opts)
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
         vim.keymap.set('n', 'gi', lsp_implementation, opts)
