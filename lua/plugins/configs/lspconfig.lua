@@ -76,7 +76,7 @@ lspconfig.rust_analyzer.setup({
 })
 
 vim.diagnostic.config({
-    virtual_text = false,
+    virtual_text = true,
     serverity_sort = true,
     underline = true,
     float = {
