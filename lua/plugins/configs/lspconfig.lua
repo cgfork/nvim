@@ -4,7 +4,6 @@ local lspconfigutil = require('lspconfig/util')
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-
 lspconfig.lua_ls.setup {
     capabilities = capabilities,
     settings = {
@@ -75,8 +74,23 @@ lspconfig.rust_analyzer.setup({
     },
 })
 
+local sign = function(opts)
+    vim.fn.sign_define(opts.name, {
+        texthl = opts.name,
+        text = opts.text,
+        numhl = ''
+    })
+end
+
+sign({ name = 'DiagnosticSignError', text = '' })
+sign({ name = 'DiagnosticSignWarn', text = '' })
+sign({ name = 'DiagnosticSignHint', text = '' })
+sign({ name = 'DiagnosticSignInfo', text = '' })
+
 vim.diagnostic.config({
-    virtual_text = true,
+    virtual_text = false,
+    signs = true,
+    update_in_insert = true,
     serverity_sort = true,
     underline = true,
     float = {
@@ -84,6 +98,11 @@ vim.diagnostic.config({
         source = "always",
     },
 })
+
+vim.cmd([[
+set signcolumn=yes
+autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
+]])
 
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
     vim.lsp.handlers.hover, {
@@ -134,9 +153,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(ev)
         vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
         local opts = { buffer = ev.buf }
-        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+        vim.keymap.set('n', 'gD', vim.lsp.buf.type_definition, opts)
         vim.keymap.set('n', 'gd', lsp_definition, opts)
         vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
         vim.keymap.set('n', 'gi', lsp_implementation, opts)
         vim.keymap.set('n', 'gr', lsp_references, opts)
         vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
@@ -147,7 +167,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 -- Format on save
 vim.api.nvim_create_autocmd('BufWritePre', {
-    buffer = buffer,
     pattern = { "*.go", "*.rs", "*.lua" },
     callback = function()
         vim.lsp.buf.format { async = false }
