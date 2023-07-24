@@ -23,5 +23,11 @@ if not vim.loop.fs_stat(lazypath) then
     lazy_install(lazypath)
 end
 
+if vim.g.neovide then
+    vim.o.guifont = "Menlo:h12"
+    vim.o.linespace = 0
+    vim.g.neo_scale_factor = 1.0
+end
+
 vim.opt.rtp:prepend(lazypath)
 require("plugins")

@@ -168,6 +168,21 @@ local plugins_to_install = {
         ft = { "go", 'gomod' },
         build = ':lua require("go.install").update_all_sync()'
     },
+    {
+        "theHamsta/nvim-dap-virtual-text",
+        dependencies = {
+            "mfussenegger/nvim-dap",
+        },
+        opts = {},
+    },
+    {
+        "rcarriga/nvim-dap-ui",
+        dependencies = {
+            "mfussenegger/nvim-dap",
+        },
+        config = function()
+        end
+    },
 
     {
         "nvim-lualine/lualine.nvim",
@@ -212,6 +227,15 @@ local plugins_to_install = {
                 },
             }
         end
+    },
+    {
+        "folke/trouble.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        opts = {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+        },
     },
 
     {
@@ -264,11 +288,59 @@ local plugins_to_install = {
     {
         "catppuccin/nvim",
         name = "catppuccin",
-        config = function()
+        lazy = false,
+        priority = 1000,
+        build = ":CatppuccinCompile",
+        opts = {
+            flavour = "mocha",
+            transparent_background = true,
+            term_colors = true,
+            styles = {
+                comments = { "italic" },
+                conditionals = {},
+                loops = {},
+                functions = {},
+                keywords = {},
+                strings = {},
+                variables = {},
+                numbers = {},
+                booleans = {},
+                properties = {},
+                types = {},
+            },
+
+        },
+        config = function(_, opts)
+            require("catppuccin").setup(opts)
             vim.cmd("set background=dark")
             vim.cmd("colorscheme catppuccin")
         end,
     },
+    {
+        "iamcco/markdown-preview.nvim",
+        build = "cd app && npm install",
+        init = function() vim.g.mkdp_filetypes = { "markdown" } end,
+        ft = { "markdown" }
+    },
+    {
+        "folke/todo-comments.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+        }
+    },
+    {
+        'glepnir/dashboard-nvim',
+        event = 'VimEnter',
+        config = function()
+            require('dashboard').setup {
+                -- config
+            }
+        end,
+        dependencies = { { 'nvim-tree/nvim-web-devicons' } }
+    }
 }
 
 require("lazy").setup(plugins_to_install, {
