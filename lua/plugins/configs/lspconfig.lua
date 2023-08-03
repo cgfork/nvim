@@ -74,6 +74,11 @@ lspconfig.rust_analyzer.setup({
     },
 })
 
+lspconfig.tsserver.setup {
+    capabilities = capabilities,
+    root_dir = lspconfigutil.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
+}
+
 local sign = function(opts)
     vim.fn.sign_define(opts.name, {
         texthl = opts.name,
