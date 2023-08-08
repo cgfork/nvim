@@ -24,7 +24,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 
 if vim.g.neovide then
-    vim.o.guifont = "Menlo:h12"
+    vim.o.guifont = "Menlo:h13:w100"
     vim.o.linespace = 0
     vim.g.neo_scale_factor = 1.0
 end
