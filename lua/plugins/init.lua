@@ -164,7 +164,7 @@ local plugins_to_install = {
             },
             server = {
                 -- on_attach is a callback called when the language server attachs to the buffer
-                on_attach = function(client, bufnr)
+                on_attach = function(client, _)
                 end,
                 settings = {
                     -- to enable rust-analyzer settings visit:
@@ -326,8 +326,9 @@ local plugins_to_install = {
         priority = 1000,
         build = ":CatppuccinCompile",
         opts = {
-            flavour = "mocha",
-            transparent_background = true,
+            -- flavour = "mocha",
+            flavour = "frappe",
+            transparent_background = false,
             term_colors = true,
             styles = {
                 comments = { "italic" },
@@ -345,6 +346,9 @@ local plugins_to_install = {
 
         },
         config = function(_, opts)
+            if vim.g.neovide then
+                opts.flavour = "latte"
+            end
             require("catppuccin").setup(opts)
             vim.cmd("set background=dark")
             vim.cmd("colorscheme catppuccin")
