@@ -31,3 +31,16 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 require("plugins")
+
+if not vim.g.neovide then
+    local status, _ = pcall(require, "catppuccin")
+    if status then
+        vim.cmd("set background=dark")
+        vim.cmd("colorscheme catppuccin")
+    end
+else
+    local status, _ = pcall(require, "kanagawa")
+    if status then
+        vim.cmd("colorscheme kanagawa-lotus")
+    end
+end

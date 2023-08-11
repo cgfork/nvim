@@ -24,6 +24,7 @@ local plugins_to_install = {
             vim.g.loaded_netrw = 1
             vim.g.loaded_netrwPlugin = 1
             vim.keymap.set('n', '<leader>tt', ':NvimTreeToggle<CR>', { silent = true })
+            vim.keymap.set('n', '<leader>tf', ':NvimTreeFindFile<CR>', { silent = true })
         end,
 
         opts = {
@@ -346,13 +347,21 @@ local plugins_to_install = {
 
         },
         config = function(_, opts)
-            if vim.g.neovide then
-                opts.flavour = "latte"
-            end
             require("catppuccin").setup(opts)
-            vim.cmd("set background=dark")
-            vim.cmd("colorscheme catppuccin")
         end,
+    },
+    {
+        "rebelot/kanagawa.nvim",
+        name = "kanagawa",
+        lazy = false,
+        priority = 10001,
+        build = ":KanagawaCompile",
+        opts = {
+            statementStype = {
+                bold = false,
+            },
+            transparent = false,
+        },
     },
     {
         "iamcco/markdown-preview.nvim",
