@@ -23,8 +23,13 @@ if not vim.loop.fs_stat(lazypath) then
     lazy_install(lazypath)
 end
 
+-- Font for neovide
 if vim.g.neovide then
-    vim.o.guifont = "Menlo:h13:w100"
+    if vim.loop.os_uname().sysname == "Linux" then
+        vim.o.guifont = "Hack:h11"
+    else
+        vim.o.guifont = "Menlo:h13:w100"
+    end
     vim.o.linespace = 0
     vim.g.neo_scale_factor = 1.0
 end
@@ -32,6 +37,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 require("plugins")
 
+-- Colorscheme for neovide
 if not vim.g.neovide then
     local status, _ = pcall(require, "catppuccin")
     if status then
@@ -41,6 +47,6 @@ if not vim.g.neovide then
 else
     local status, _ = pcall(require, "kanagawa")
     if status then
-        vim.cmd("colorscheme kanagawa-lotus")
+        vim.cmd("colorscheme kanagawa-wave")
     end
 end
