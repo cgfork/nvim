@@ -26,7 +26,7 @@ end
 -- Font for neovide
 if vim.g.neovide then
     if vim.loop.os_uname().sysname == "Linux" then
-        vim.o.guifont = "Hack:h11"
+        vim.o.guifont = "FiraMono Nerd Font:h11"
     else
         vim.o.guifont = "Menlo:h13:w100"
     end
@@ -45,8 +45,9 @@ if not vim.g.neovide then
         vim.cmd("colorscheme catppuccin")
     end
 else
-    local status, _ = pcall(require, "kanagawa")
+    local status, _ = pcall(require, "gruvbox")
     if status then
-        vim.cmd("colorscheme kanagawa-wave")
+        vim.cmd("set background=light")
+        vim.cmd("colorscheme gruvbox")
     end
 end

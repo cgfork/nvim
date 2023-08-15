@@ -351,10 +351,19 @@ local plugins_to_install = {
         end,
     },
     {
+        "ellisonleao/gruvbox.nvim",
+        priority = 10002,
+        opts = {
+            bold = false,
+            transparent_mode = false,
+        },
+    },
+    {
         "rebelot/kanagawa.nvim",
         name = "kanagawa",
         lazy = false,
         priority = 10001,
+        enabled = false,
         build = ":KanagawaCompile",
         opts = {
             statementStype = {
