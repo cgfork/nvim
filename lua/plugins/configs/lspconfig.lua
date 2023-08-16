@@ -79,6 +79,11 @@ lspconfig.tsserver.setup {
     root_dir = lspconfigutil.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
 }
 
+lspconfig.marksman.setup({
+    filetypes = { "md", "markdown" },
+    root_dir = lspconfigutil.root_pattern(".git", ".marksman.toml"),
+})
+
 local sign = function(opts)
     vim.fn.sign_define(opts.name, {
         texthl = opts.name,
