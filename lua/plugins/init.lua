@@ -190,6 +190,11 @@ local plugins_to_install = {
 
     {
         "kosayoda/nvim-lightbulb",
+        config = function()
+            require("nvim-lightbulb").setup({
+                autocmd = { enabled = true }
+            })
+        end
     },
 
     {
