@@ -168,7 +168,21 @@ local plugins_to_install = {
         end,
         config = function()
             require('nvim-treesitter.configs').setup({
-                ensure_installed = "all",
+                ensure_installed = {
+                    "c",
+                    "cpp",
+                    "lua",
+                    "vim",
+                    "go",
+                    "rust",
+                    "bash",
+                    "c_sharp",
+                    "css",
+                    "html",
+                    "json",
+                    "python",
+                    "proto"
+                },
                 highlight = {
                     enable = true,
                     additional_vim_regex_highlighting = false,
