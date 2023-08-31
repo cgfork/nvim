@@ -30,7 +30,7 @@ if vim.g.neovide then
     elseif vim.loop.os_uname().sysname == "Windows_NT" then
         vim.o.guifont = "Hack Nerd Font:h12"
     else
-        vim.o.guifont = "Menlo:h13:w100"
+        vim.o.guifont = "Hack Nerd Font:h12"
     end
     vim.o.linespace = 0
     vim.g.neo_scale_factor = 1.0
