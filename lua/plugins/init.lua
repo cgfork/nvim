@@ -424,9 +424,12 @@ local plugins_to_install = {
         priority = 1000,
         build = ":CatppuccinCompile",
         opts = {
-            flavour = "mocha",
-            -- flavour = "frappe",
+            -- flavour = "mocha", -- "mocha", "latte", "frappe", "macchiato"
             transparent_background = true,
+            background = {
+                light = "latte",
+                dark = "mocha",
+            },
             term_colors = true,
             styles = {
                 comments = { "italic" },
@@ -450,6 +453,7 @@ local plugins_to_install = {
     {
         "ellisonleao/gruvbox.nvim",
         priority = 10002,
+        enabled = false,
         opts = {
             bold = false,
             transparent_mode = false,
@@ -468,6 +472,13 @@ local plugins_to_install = {
             },
             transparent = false,
         },
+    },
+    {
+        "folke/tokyonight.nvim",
+        lazy = false,
+        priority = 10002,
+        enabled = false,
+        opts = {},
     },
     {
         "iamcco/markdown-preview.nvim",

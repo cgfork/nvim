@@ -49,9 +49,9 @@ if not vim.g.neovide then
         vim.cmd("colorscheme catppuccin")
     end
 else
-    local status, _ = pcall(require, "gruvbox")
+    local status, _ = pcall(require, "catppuccin")
     if status then
-        vim.cmd("set background=light")
-        vim.cmd("colorscheme gruvbox")
+        vim.cmd("set background=dark")
+        vim.cmd("colorscheme catppuccin")
     end
 end
