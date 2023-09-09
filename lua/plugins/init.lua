@@ -318,6 +318,7 @@ local plugins_to_install = {
         tag = "0.1.1",
         dependencies = {
             "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope-project.nvim",
         },
         config = function()
             local telescope_builtin = require('telescope.builtin')
@@ -340,6 +341,7 @@ local plugins_to_install = {
                     },
                 },
             }
+            require("telescope").load_extension('project')
         end
     },
     {
@@ -519,9 +521,8 @@ local plugins_to_install = {
                         enable = true,
                     },
                     shortcut = {
-                        { desc = "Projects", group = "DashboardShortCut", key = "p", action = "Telescope projects" },
-                        { desc = "Files",    group = "DashboardShortCut", key = "f", action = "Telescope find_files" },
-                        { desc = "Config",   group = "DashboardShortCut", key = "e", action = "edit $MYVIMRC" },
+                        { desc = "Files",  group = "DashboardShortCut", key = "f", action = "Telescope find_files" },
+                        { desc = "Config", group = "DashboardShortCut", key = "e", action = "edit $MYVIMRC" },
                     },
 
 
