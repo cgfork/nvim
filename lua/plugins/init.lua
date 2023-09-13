@@ -315,19 +315,13 @@ local plugins_to_install = {
 
     {
         "nvim-telescope/telescope.nvim",
-        tag = "0.1.1",
+        tag = "0.1.2",
         dependencies = {
             "nvim-lua/plenary.nvim",
             "nvim-telescope/telescope-project.nvim",
             "ThePrimeagen/harpoon",
         },
         config = function()
-            local telescope_builtin = require('telescope.builtin')
-            vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, {})
-            vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, {})
-            vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, {})
-            vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, {})
-            vim.keymap.set('n', '<leader>fs', telescope_builtin.grep_string, {})
             local actions = require("telescope.actions")
             require("telescope").load_extension('project')
             require("telescope").load_extension('harpoon')
@@ -358,6 +352,16 @@ local plugins_to_install = {
                     },
                 },
             }
+            local telescope_builtin = require('telescope.builtin')
+            vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, {})
+            vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, {})
+            vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, {})
+            vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, {})
+            vim.keymap.set('n', '<leader>fs', telescope_builtin.grep_string, {})
+
+            vim.keymap.set('n', '<leader>fp',
+                ":lua require'telescope'.extensions.project.project{ display_type = full}<CR>",
+                { noremap = true, silent = true })
         end
     },
     {
@@ -443,7 +447,7 @@ local plugins_to_install = {
         build = ":CatppuccinCompile",
         opts = {
             -- flavour = "mocha", -- "mocha", "latte", "frappe", "macchiato"
-            transparent_background = true,
+            transparent_background = false,
             background = {
                 light = "latte",
                 dark = "mocha",
