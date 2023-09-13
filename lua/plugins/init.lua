@@ -319,6 +319,7 @@ local plugins_to_install = {
         dependencies = {
             "nvim-lua/plenary.nvim",
             "nvim-telescope/telescope-project.nvim",
+            "ThePrimeagen/harpoon",
         },
         config = function()
             local telescope_builtin = require('telescope.builtin')
@@ -328,6 +329,9 @@ local plugins_to_install = {
             vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, {})
             vim.keymap.set('n', '<leader>fs', telescope_builtin.grep_string, {})
             local actions = require("telescope.actions")
+            require("telescope").load_extension('project')
+            require("telescope").load_extension('harpoon')
+            local project_actions = require("telescope._extensions.project.actions")
             require("telescope").setup {
                 defaults = {
                     mappings = {
@@ -340,8 +344,20 @@ local plugins_to_install = {
                         n = { q = actions.close },
                     },
                 },
+                extensions = {
+                    project = {
+                        base_dirs = {
+                            { path = '~/Workspace', max_depth = 2 },
+                        },
+                        hidden_files = true,
+                        sync_with_nvim_tree = true,
+                        on_project_selected = function(prompt_bufnr)
+                            project_actions.change_working_directory(prompt_bufnr, false)
+                            require("harpoon.ui").nav_file(1)
+                        end
+                    },
+                },
             }
-            require("telescope").load_extension('project')
         end
     },
     {
