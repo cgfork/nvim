@@ -203,6 +203,26 @@ local plugins_to_install = {
     },
 
     {
+        "kevinhwang91/nvim-bqf",
+        ft = "qf",
+        config = function()
+            require("bqf").setup {}
+        end,
+    },
+
+    {
+        'nvimdev/lspsaga.nvim',
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter', -- optional
+            'nvim-tree/nvim-web-devicons'      -- optional
+        },
+        config = function()
+            require('lspsaga').setup({})
+        end,
+
+    },
+
+    {
         "kosayoda/nvim-lightbulb",
         config = function()
             require("nvim-lightbulb").setup({
