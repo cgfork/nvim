@@ -79,6 +79,10 @@ lspconfig.tsserver.setup {
     root_dir = lspconfigutil.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
 }
 
+lspconfig.pyright.setup {
+    capabilities = capabilities,
+}
+
 lspconfig.marksman.setup({
     filetypes = { "md", "markdown" },
     root_dir = lspconfigutil.root_pattern(".git", ".marksman.toml"),
