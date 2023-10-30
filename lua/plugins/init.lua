@@ -406,6 +406,9 @@ local plugins_to_install = {
     },
     {
         "lewis6991/gitsigns.nvim",
+        config = function()
+            require('gitsigns').setup {}
+        end
     },
     {
         "lukas-reineke/indent-blankline.nvim",
