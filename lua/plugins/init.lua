@@ -527,6 +527,7 @@ local plugins_to_install = {
         name = "catppuccin",
         lazy = false,
         priority = 1000,
+        enabled = false,
         build = ":CatppuccinCompile",
         opts = {
             -- flavour = "mocha", -- "mocha", "latte", "frappe", "macchiato"
@@ -556,6 +557,18 @@ local plugins_to_install = {
         end,
     },
     {
+        'projekt0n/github-nvim-theme',
+        lazy = false,    -- make sure we load this during startup if it is your main colorscheme
+        priority = 1000, -- make sure to load this before all the other start plugins
+        config = function()
+            require('github-theme').setup({
+                -- ...
+            })
+
+            vim.cmd('colorscheme github_dark')
+        end,
+    },
+    {
         "ellisonleao/gruvbox.nvim",
         priority = 10002,
         enabled = false,
@@ -564,27 +577,7 @@ local plugins_to_install = {
             transparent_mode = false,
         },
     },
-    {
-        "rebelot/kanagawa.nvim",
-        name = "kanagawa",
-        lazy = false,
-        priority = 10001,
-        enabled = false,
-        build = ":KanagawaCompile",
-        opts = {
-            statementStype = {
-                bold = false,
-            },
-            transparent = false,
-        },
-    },
-    {
-        "folke/tokyonight.nvim",
-        lazy = false,
-        priority = 10002,
-        enabled = false,
-        opts = {},
-    },
+
     {
         "iamcco/markdown-preview.nvim",
         build = "cd app && npm install",
