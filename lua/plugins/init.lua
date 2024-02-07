@@ -321,7 +321,6 @@ local plugins_to_install = {
     {
         "folke/noice.nvim",
         event = "VeryLazy",
-        enabled = false,
         opts = {
             -- add any options here
         },
