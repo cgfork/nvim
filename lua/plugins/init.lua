@@ -443,7 +443,15 @@ local plugins_to_install = {
     {
         "lewis6991/gitsigns.nvim",
         config = function()
-            require('gitsigns').setup {}
+            require('gitsigns').setup {
+                signs = {
+                    add = { hl = 'GitGutterAdd', text = '+' },
+                    change = { hl = 'GitGutterChange', text = '~' },
+                    delete = { hl = 'GitGutterDelete', text = '-' },
+                    topdelete = { hl = 'GitGutterDelete', text = '‾' },
+                    changedelete = { hl = 'GitGutterChange', text = '~' },
+                },
+            }
         end
     },
     {
@@ -543,7 +551,7 @@ local plugins_to_install = {
         name = "catppuccin",
         lazy = false,
         priority = 1000,
-        enabled = false,
+        enabled = true,
         build = ":CatppuccinCompile",
         opts = {
             -- flavour = "mocha", -- "mocha", "latte", "frappe", "macchiato"
@@ -576,6 +584,7 @@ local plugins_to_install = {
         'projekt0n/github-nvim-theme',
         lazy = false,    -- make sure we load this during startup if it is your main colorscheme
         priority = 1000, -- make sure to load this before all the other start plugins
+        enabled = false,
         config = function()
             require('github-theme').setup({
                 -- ...
