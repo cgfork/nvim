@@ -1,11 +1,9 @@
 require("core")
+local common = require("common")
+local echo = common.echo
+local try_require = common.try_require
 
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
-
-local function echo(str)
-    vim.cmd "redraw"
-    vim.api.nvim_echo({ { str, "Bold" } }, true, {})
-end
 
 local function lazy_install(path)
     echo "Installing lazy.nvim & plugins ..."
@@ -39,7 +37,7 @@ elseif vim.loop.os_uname().sysname == "Windows_NT" then
 end
 
 vim.opt.rtp:prepend(lazypath)
-require("plugins")
+try_require("plugins")
 
 -- Colorscheme for neovide
 if not vim.g.neovide then
