@@ -521,6 +521,22 @@ local plugins_to_install = {
             },
         },
     },
+    {
+        "akinsho/toggleterm.nvim",
+        opts = {
+            size = 12,
+            open_mapping = [[<c-\>]],
+            shade_filetypes = {},
+            shade_terminals = true,
+            start_in_inset = true,
+            persist_size = true,
+            direction = 'horizontal',
+        },
+        config = function(opts)
+            require("toggleterm").setup(opts)
+            require("plugins/configs/lazygit")
+        end,
+    },
 
     {
         "catppuccin/nvim",
