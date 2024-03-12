@@ -37,7 +37,12 @@ elseif vim.loop.os_uname().sysname == "Windows_NT" then
 end
 
 vim.opt.rtp:prepend(lazypath)
-try_require("plugins")
+
+if vim.g.vscode then
+    echo "Loading nvim from vscode."
+else
+    try_require("plugins")
+end
 
 -- Colorscheme for neovide
 if not vim.g.neovide then
