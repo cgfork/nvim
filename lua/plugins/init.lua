@@ -375,6 +375,7 @@ local plugins_to_install = {
         dependencies = {
             "nvim-lua/plenary.nvim",
             "nvim-telescope/telescope-project.nvim",
+            "nvim-telescope/telescope-live-grep-args.nvim",
             "ThePrimeagen/harpoon",
         },
         config = function()
@@ -411,6 +412,8 @@ local plugins_to_install = {
             local telescope_builtin = require('telescope.builtin')
             vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, {})
             vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, {})
+            vim.keymap.set('n', '<leader>fa', ":lua require 'telescope'.extensions.live_grep_args.live_grep_args()<CR>",
+                { noremap = true })
             vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, {})
             vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, {})
             vim.keymap.set('n', '<leader>fs', telescope_builtin.grep_string, {})
