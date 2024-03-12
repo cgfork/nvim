@@ -264,7 +264,7 @@ local plugins_to_install = {
             },
             server = {
                 -- on_attach is a callback called when the language server attachs to the buffer
-                on_attach = function(client, _)
+                on_attach = function(_, _)
                 end,
                 settings = {
                     -- to enable rust-analyzer settings visit:
@@ -551,7 +551,7 @@ local plugins_to_install = {
         name = "catppuccin",
         lazy = false,
         priority = 1000,
-        enabled = true,
+        enabled = false,
         build = ":CatppuccinCompile",
         opts = {
             -- flavour = "mocha", -- "mocha", "latte", "frappe", "macchiato"
@@ -601,6 +601,17 @@ local plugins_to_install = {
             bold = false,
             transparent_mode = false,
         },
+    },
+    {
+        "EdenEast/nightfox.nvim",
+        priority = 1000,
+        enabled = true,
+        config = function()
+            require('nightfox').setup {
+
+            }
+            vim.cmd("colorscheme nightfox")
+        end,
     },
 
     {
