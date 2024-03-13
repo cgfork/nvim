@@ -324,6 +324,7 @@ local plugins_to_install = {
         opts = {
             -- add any options here
         },
+        enabled = false,
         dependencies = {
             -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
             "MunifTanjim/nui.nvim",
@@ -542,9 +543,16 @@ local plugins_to_install = {
             start_in_inset = true,
             persist_size = true,
             direction = 'horizontal',
+            autochdir = true,
         },
         config = function(opts)
             require("toggleterm").setup(opts)
+
+            vim.keymap.set('n', '<leader>tc', function()
+                local current_file_path = vim.fn.expand('%:p:h')
+                vim.cmd("ToggleTerm " .. "dir=" .. current_file_path)
+            end)
+
             require("plugins/configs/lazygit")
         end,
     },
