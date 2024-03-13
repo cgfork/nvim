@@ -140,42 +140,37 @@ local function is_available(plugin)
     return lazy_config_avail and lazy_config.spec.plugins[plugin] ~= nil
 end
 
-local lsp_definition
-local lsp_references
-local lsp_implementation
-if is_available "telescope.nvim" then
-    local telescope_builtin = require("telescope.builtin")
-    lsp_definition = function()
-        telescope_builtin.lsp_definitions()
-    end
-    lsp_references = function()
-        telescope_builtin.lsp_references()
-    end
-    lsp_implementation = function()
-        telescope_builtin.lsp_implementations()
-    end
-else
-    lsp_definition = vim.lsp.buf.definition
-    lsp_references = vim.lsp.buf.references
-    lsp_implementation = vim.lsp.buf.implementation
-end
-
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
     callback = function(ev)
         vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
-        local opts = { buffer = ev.buf }
-        vim.keymap.set('n', 'gD', vim.lsp.buf.type_definition, opts)
-        vim.keymap.set('n', 'gd', lsp_definition, opts)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-        vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-        vim.keymap.set('n', 'gi', lsp_implementation, opts)
-        vim.keymap.set('n', 'gr', lsp_references, opts)
-        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
-        vim.keymap.set('n', '<leader>sf', vim.lsp.buf.format, opts)
+        local map = function(keys, func, desc)
+            vim.keymap.set('n', keys, func, { buffer = ev.buf, desc = 'LSP: ' .. desc })
+        end
+
+        if is_available 'telescope.nvim' then
+            local ts = require("telescope.builtin")
+            map('gd', ts.lsp_definitions, '[G]oto [D]efinition')
+            map('gD', ts.lsp_type_definitions, 'Type [D]efinition')
+            map('gi', ts.lsp_implementations, '[G]oto [I]mplementation')
+            map('gr', ts.lsp_references, '[G]oto [R]eferences')
+            map('<leader>ws', ts.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+            map('<leader>ds', ts.lsp_document_symbols, '[D]ocument [S]ymbols')
+        else
+            map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+            map('gD', vim.lsp.buf.type_definition, 'Type [D]efinition')
+            map('gi', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+            map('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
+        end
+
+
+        map('K', vim.lsp.buf.hover, 'Hover Document')
+        map('<C-k>', vim.lsp.buf.signature_help, 'Signature Help')
+        map('<leader>rn', vim.lsp.buf.rename, '[R]e[N]ame')
+        map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+        map('<leader>sf', vim.lsp.buf.format, '[S]ave [F]ormat')
     end,
 })
 
