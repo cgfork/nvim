@@ -33,8 +33,8 @@ local plugins_to_install = {
             -- Disable netrw
             vim.g.loaded_netrw = 1
             vim.g.loaded_netrwPlugin = 1
-            vim.keymap.set('n', '<leader>tt', ':NvimTreeToggle<CR>', { silent = true })
-            vim.keymap.set('n', '<leader>tf', ':NvimTreeFindFile<CR>', { silent = true })
+            vim.keymap.set('n', '<leader>tt', ':NvimTreeToggle<CR>', { silent = true, desc = 'Nvim[T]ree [T]oggle' })
+            vim.keymap.set('n', '<leader>tf', ':NvimTreeFindFile<CR>', { silent = true, desc = 'Nvim[T]ree [F]ind File' })
         end,
 
         opts = {
@@ -240,11 +240,11 @@ local plugins_to_install = {
         config = function()
             require("aerial").setup({
                 on_attach = function(bufnr)
-                    vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', { buffer = bufnr })
-                    vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', { buffer = bufnr })
+                    vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', { buffer = bufnr, desc = '[{] Aerial Prev' })
+                    vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', { buffer = bufnr, desc = '[}] Aerial Next' })
                 end
             })
-            vim.keymap.set('n', '<leader>at', '<cmd>AerialToggle!<CR>')
+            vim.keymap.set('n', '<leader>at', '<cmd>AerialToggle!<CR>', { desc = '[A]erial [T]oggle' })
         end,
     },
 
@@ -375,9 +375,21 @@ local plugins_to_install = {
         tag = "0.1.2",
         dependencies = {
             "nvim-lua/plenary.nvim",
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                -- `build` is used to run some command when the plugin is installed/updated.
+                build = 'make',
+
+                -- `cond` is a condition used to determine whether this plugin should be installed and loaded.
+                cond = function()
+                    return vim.fn.executable 'make' == 1
+                end,
+            },
             "nvim-telescope/telescope-project.nvim",
             "nvim-telescope/telescope-live-grep-args.nvim",
+            "nvim-telescope/telescope-ui-select.nvim",
             "ThePrimeagen/harpoon",
+
         },
         config = function()
             local actions = require("telescope.actions")
@@ -408,20 +420,37 @@ local plugins_to_install = {
                             require("harpoon.ui").nav_file(1)
                         end
                     },
+                    ['ui-select'] = {
+                        require('telescope.themes').get_dropdown(),
+                    },
                 },
             }
             local telescope_builtin = require('telescope.builtin')
-            vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, {})
-            vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, {})
+            vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, { desc = '[F]ind [F]iles' })
+            vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, { desc = '[F]ind by [G]rep' })
             vim.keymap.set('n', '<leader>fa', ":lua require 'telescope'.extensions.live_grep_args.live_grep_args()<CR>",
-                { noremap = true })
-            vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, {})
-            vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, {})
-            vim.keymap.set('n', '<leader>fs', telescope_builtin.grep_string, {})
-
+                { noremap = true, desc = '[F]ind by Grep with [A]rgs' })
+            vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, { desc = '[F]ind [B]uffers' })
+            vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, { desc = '[F]ind [H]elp' })
+            vim.keymap.set('n', '<leader>fw', telescope_builtin.grep_string, { desc = '[F]ind by current [W]ord' })
+            vim.keymap.set('n', '<leader>fk', telescope_builtin.keymaps, { desc = '[F]ind [K]eymaps' })
+            vim.keymap.set('n', '<leader>fs', telescope_builtin.builtin, { desc = '[F]ind [S]elect Telescope' })
+            vim.keymap.set('n', '<leader>fd', telescope_builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
             vim.keymap.set('n', '<leader>fp',
                 ":lua require'telescope'.extensions.project.project{ display_type = full}<CR>",
-                { noremap = true, silent = true })
+                { noremap = true, silent = true, desc = '[F]ind [P]rojects' })
+            vim.keymap.set('n', '<leader>/', function()
+                telescope_builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+                    winblend = 10,
+                    previewer = false,
+                })
+            end, { desc = '[/] Fuzzily search in current buffer' })
+            vim.keymap.set('n', '<leader>f/', function()
+                telescope_builtin.live_grep {
+                    grep_open_files = true,
+                    prompt_title = 'Live Grep in Open Files',
+                }
+            end, { desc = '[F]ind [/] in Open Files' })
         end
     },
     {
@@ -551,7 +580,7 @@ local plugins_to_install = {
             vim.keymap.set('n', '<leader>tc', function()
                 local current_file_path = vim.fn.expand('%:p:h')
                 vim.cmd("ToggleTerm " .. "dir=" .. current_file_path)
-            end)
+            end, { desc = 'Toggle [T]erm in current dir' })
 
             require("plugins/configs/lazygit")
         end,

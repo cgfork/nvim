@@ -88,36 +88,6 @@ lspconfig.marksman.setup({
     root_dir = lspconfigutil.root_pattern(".git", ".marksman.toml"),
 })
 
-local sign = function(opts)
-    vim.fn.sign_define(opts.name, {
-        texthl = opts.name,
-        text = opts.text,
-        numhl = ''
-    })
-end
-
-sign({ name = 'DiagnosticSignError', text = '' })
-sign({ name = 'DiagnosticSignWarn', text = '' })
-sign({ name = 'DiagnosticSignHint', text = '' })
-sign({ name = 'DiagnosticSignInfo', text = '' })
-
-vim.diagnostic.config({
-    virtual_text = true,
-    signs = true,
-    update_in_insert = true,
-    serverity_sort = true,
-    underline = true,
-    float = {
-        border = "rounded",
-        source = "always",
-    },
-})
-
-vim.cmd([[
-set signcolumn=yes
-autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
-]])
-
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
     vim.lsp.handlers.hover, {
         border = "rounded",
@@ -129,11 +99,6 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
         border = "rounded",
     }
 )
-
-vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist)
 
 local function is_available(plugin)
     local lazy_config_avail, lazy_config = pcall(require, "lazy.core.config")
@@ -171,6 +136,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
         map('<leader>rn', vim.lsp.buf.rename, '[R]e[N]ame')
         map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
         map('<leader>sf', vim.lsp.buf.format, '[S]ave [F]ormat')
+
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        if client and client.server_capabilities.documentHighlightProvier then
+            vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+                buffer = ev.buf,
+                callback = vim.lsp.buf.document_hightlight,
+            })
+            vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+                buffer = ev.buf,
+                callback = vim.lsp.buf.clear_references,
+            })
+        end
     end,
 })
 
