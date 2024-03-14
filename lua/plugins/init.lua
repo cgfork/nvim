@@ -303,22 +303,6 @@ local plugins_to_install = {
         build = ':lua require("go.install").update_all_sync()'
     },
     {
-        "theHamsta/nvim-dap-virtual-text",
-        dependencies = {
-            "mfussenegger/nvim-dap",
-        },
-        opts = {},
-    },
-    {
-        "rcarriga/nvim-dap-ui",
-        dependencies = {
-            "mfussenegger/nvim-dap",
-        },
-        config = function()
-        end
-    },
-
-    {
         "folke/noice.nvim",
         event = "VeryLazy",
         opts = {
@@ -703,7 +687,8 @@ local plugins_to_install = {
             }
         end,
         dependencies = { { 'nvim-tree/nvim-web-devicons' } }
-    }
+    },
+    require('plugins.configs.debug')
 }
 
 require("lazy").setup(plugins_to_install, {
