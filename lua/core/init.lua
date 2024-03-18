@@ -27,6 +27,7 @@ vim.opt.smartindent = true
 -- UI
 vim.opt.number = true
 vim.opt.relativenumber = false
+vim.opt.signcolumn = 'yes'
 vim.opt.cursorline = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
