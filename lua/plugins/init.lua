@@ -124,7 +124,7 @@ local plugins_to_install = {
                 -- 'codicons' for codicon preset (requires vscode-codicons font)
                 --
                 -- default: 'default'
-                preset = 'codicons',
+                preset = 'default',
 
                 -- override preset symbols
                 --
@@ -506,6 +506,7 @@ local plugins_to_install = {
 
     {
         "github/copilot.vim",
+        enabled = false,
         config = function()
             vim.g.copilot_no_tab_map = true
             vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
@@ -688,8 +689,20 @@ local plugins_to_install = {
         end,
         dependencies = { { 'nvim-tree/nvim-web-devicons' } }
     },
-    require('plugins.configs.debug')
+    require('plugins.configs.debug'),
 }
+
+local status, bytedance = pcall(require, 'plugins.bytedance')
+if status then
+    Echo "bytedance plugin loaded"
+    -- 关闭 codeverse 内置自动补全
+    vim.g.codeverse_disable_autocompletion = true
+    -- 关闭 codeverse 内置 tab 映射
+    vim.g.codeverse_no_map_tab = true
+    -- 关闭 codeverse 内置补全映射
+    vim.g.codeverse_disable_bindings = true
+    plugins_to_install[#plugins_to_install + 1] = bytedance
+end
 
 require("lazy").setup(plugins_to_install, {
     defaults = { lazy = false },

@@ -1,12 +1,26 @@
 require("core")
-local common = require("common")
-local echo = common.echo
-local try_require = common.try_require
+
+local function try_require(name, notify)
+    local ok, pkg = pcall(require, name)
+    if (not ok) and notify then
+        local msg = string.format(
+            'The package(`%s`) is not loaded successfully.', name
+        )
+        vim.notify(msg, vim.log.levels.ERROR)
+    end
+
+    return pkg
+end
+
+function Echo(str)
+    vim.cmd "redraw"
+    vim.api.nvim_echo({ { str, "Bold" } }, true, {})
+end
 
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
 local function lazy_install(path)
-    echo "Installing lazy.nvim & plugins ..."
+    Echo "Installing lazy.nvim & plugins ..."
     local repo = "https://github.com/folke/lazy.nvim.git"
     vim.fn.system { "git", "clone", "--filter=blob:none", "--branch=stable", repo, path }
     vim.opt.rtp:prepend(path)
@@ -16,10 +30,11 @@ local function lazy_install(path)
     -- The hook for setup
 end
 
-echo("Load lazy from " .. lazypath)
+Echo("Load lazy from " .. lazypath)
 if not vim.loop.fs_stat(lazypath) then
     lazy_install(lazypath)
 end
+
 
 -- Font for neovide
 if vim.g.neovide then
@@ -39,9 +54,9 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 if vim.g.vscode then
-    echo "Loading nvim from vscode."
+    Echo "Loading nvim from vscode."
 else
-    try_require("plugins")
+    try_require("plugins", true)
 end
 
 -- Colorscheme for neovide
