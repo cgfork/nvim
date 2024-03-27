@@ -1,5 +1,13 @@
 local Terminal = require('toggleterm.terminal').Terminal
-local lazygit = Terminal:new({ cmd = "lazygit", direction = "float", hidden = true, close_on_exit = true })
+local lazygit = Terminal:new({
+    cmd = "lazygit",
+    direction = "float",
+    hidden = true,
+    close_on_exit = true,
+    env = {
+        EDITOR = "nvim",
+    },
+})
 
 function _toggle_lazygit()
     lazygit:toggle()
