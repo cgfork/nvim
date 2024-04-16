@@ -87,6 +87,7 @@ lspconfig.rust_analyzer.setup({
 lspconfig.tsserver.setup {
     capabilities = capabilities,
     root_dir = lspconfigutil.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
+    filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript", "javascriptreact", "javascript.jsx" },
 }
 
 lspconfig.pyright.setup {
@@ -163,7 +164,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 -- Format on save
 vim.api.nvim_create_autocmd('BufWritePre', {
-    pattern = { "*.go", "*.rs", "*.lua" },
+    pattern = { "*.go", "*.rs", "*.lua", "*.js", "*.ts" },
     callback = function()
         vim.lsp.buf.format { async = false }
     end

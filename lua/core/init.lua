@@ -23,6 +23,24 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "typescript",
+    callback = function()
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt_local.softtabstop = 2
+    end
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "javascript",
+    callback = function()
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+        vim.opt_local.softtabstop = 2
+    end
+})
+
 
 -- UI
 vim.opt.number = true
