@@ -387,8 +387,7 @@ local plugins_to_install = {
         },
         config = function()
             local actions = require("telescope.actions")
-            require("telescope").load_extension('project')
-            require("telescope").load_extension('harpoon')
+
             local project_actions = require("telescope._extensions.project.actions")
             require("telescope").setup {
                 defaults = {
@@ -414,11 +413,20 @@ local plugins_to_install = {
                             require("harpoon.ui").nav_file(1)
                         end
                     },
+                    fzf = {
+                        fuzzy = true,
+                        override_generic_sorter = true,
+                        override_file_sorter = true,
+                        case_mode = "smart_case",
+                    },
                     ['ui-select'] = {
                         require('telescope.themes').get_dropdown(),
                     },
                 },
             }
+            require("telescope").load_extension('project')
+            require("telescope").load_extension('harpoon')
+            require("telescope").load_extension('fzf')
             local telescope_builtin = require('telescope.builtin')
             vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, { desc = '[F]ind [F]iles' })
             vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, { desc = '[F]ind by [G]rep' })
