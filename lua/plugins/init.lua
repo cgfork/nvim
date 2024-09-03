@@ -318,7 +318,7 @@ local plugins_to_install = {
         opts = {
             -- add any options here
         },
-        enabled = true,
+        enabled = false,
         dependencies = {
             -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
             "MunifTanjim/nui.nvim",
