@@ -64,6 +64,9 @@ lspconfig.golangci_lint_ls.setup {
 
 lspconfig.rust_analyzer.setup({
     capabilities = capabilities,
+    on_attach = function(client, bufnr)
+        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+    end,
     settings = {
         ["rust-analyzer"] = {
             imports = {
