@@ -84,7 +84,7 @@ lspconfig.rust_analyzer.setup({
     },
 })
 
-lspconfig.tsserver.setup {
+lspconfig.ts_ls.setup {
     capabilities = capabilities,
     root_dir = lspconfigutil.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
     filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript", "javascriptreact", "javascript.jsx" },

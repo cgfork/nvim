@@ -480,11 +480,20 @@ local plugins_to_install = {
         config = function()
             require('gitsigns').setup {
                 signs = {
-                    add = { hl = 'GitGutterAdd', text = '+' },
-                    change = { hl = 'GitGutterChange', text = '~' },
-                    delete = { hl = 'GitGutterDelete', text = '-' },
-                    topdelete = { hl = 'GitGutterDelete', text = '‾' },
-                    changedelete = { hl = 'GitGutterChange', text = '~' },
+                    add          = { text = '┃' },
+                    change       = { text = '┃' },
+                    delete       = { text = '_' },
+                    topdelete    = { text = '‾' },
+                    changedelete = { text = '~' },
+                    untracked    = { text = '┆' },
+                },
+                signs_staged = {
+                    add          = { text = '┃' },
+                    change       = { text = '┃' },
+                    delete       = { text = '_' },
+                    topdelete    = { text = '‾' },
+                    changedelete = { text = '~' },
+                    untracked    = { text = '┆' },
                 },
             }
         end
