@@ -97,6 +97,10 @@ lspconfig.pyright.setup {
     capabilities = capabilities,
 }
 
+lspconfig.hls.setup {
+    filetypes = { "haskell", "lhaskell", "cabal" },
+}
+
 lspconfig.marksman.setup({
     filetypes = { "md", "markdown" },
     root_dir = lspconfigutil.root_pattern(".git", ".marksman.toml"),
