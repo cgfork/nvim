@@ -87,11 +87,23 @@ lspconfig.rust_analyzer.setup({
     },
 })
 
+local vue_typescript_plugin = vim.fn.system("npm list -g  -p @vue/typescript-plugin")
+
 lspconfig.ts_ls.setup {
     capabilities = capabilities,
     root_dir = lspconfigutil.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
-    filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript", "javascriptreact", "javascript.jsx" },
+    init_options = {
+        plugins = {
+            {
+                name = "@vue/typescript-plugin",
+                location = vue_typescript_plugin,
+                languages = { "javascript", "typescript", "vue" },
+            },
+        },
+    },
+    filetypes = { "typescript", "javascript", "vue" },
 }
+
 
 lspconfig.pyright.setup {
     capabilities = capabilities,
