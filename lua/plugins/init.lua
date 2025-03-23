@@ -313,6 +313,12 @@ local plugins_to_install = {
         build = ':lua require("go.install").update_all_sync()'
     },
     {
+        "ziglang/zig.vim",
+        opts = {},
+        config = function()
+        end
+    },
+    {
         "folke/noice.nvim",
         event = "VeryLazy",
         opts = {
@@ -679,7 +685,9 @@ local plugins_to_install = {
         enabled = true,
         config = function()
             require('nightfox').setup {
-
+                options = {
+                    transparent = true,
+                },
             }
             vim.cmd("colorscheme nightfox")
         end,
