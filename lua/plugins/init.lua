@@ -542,6 +542,7 @@ local plugins_to_install = {
             require("conform").setup({
                 formatters_by_ft = {
                     lua = { "stylua" },
+                    go = { "goimports", "gofmt" },
                     -- Conform will run multiple formatters sequentially
                     python = { "isort", "black" },
                     -- You can customize some of the format options for the filetype (:help conform.format)
@@ -551,7 +552,7 @@ local plugins_to_install = {
                 },
                 format_on_save = {
                     -- These options will be passed to conform.format()
-                    timeout_ms = 500,
+                    timeout_ms = 5000,
                     lsp_format = "fallback",
                 },
             })
