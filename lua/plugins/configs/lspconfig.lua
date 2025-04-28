@@ -55,11 +55,10 @@ lspconfig.gopls.setup {
 lspconfig.golangci_lint_ls.setup {
     cmd = { "golangci-lint-langserver" },
     filetypes = { "go", "gomod" },
-    root_dir = lspconfigutil.root_pattern("go.work", "go.mod", ".git"),
     init_options = {
-        command = { "golangci-lint", "run", "--out-format", "json",
-            "--issues-exit-code=1" },
+        command = { "golangci-lint", "run", "--output.json.path=stdout", "--show-stats=false" },
     },
+    root_markers = { ".golangci.yml", ".golangci.yaml", ".golangci.toml", ".golangci.json", "go.work", "go.mod", ".git" },
 }
 
 lspconfig.rust_analyzer.setup({
