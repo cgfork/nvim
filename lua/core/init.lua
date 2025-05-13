@@ -84,3 +84,5 @@ vim.diagnostic.config({
         source = "always",
     },
 })
+
+vim.opt.winborder='single'

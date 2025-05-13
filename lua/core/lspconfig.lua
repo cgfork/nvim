@@ -1,32 +1,19 @@
 vim.lsp.enable({ "lua_ls", "golangci_lint_ls", "gopls", "pyright" })
 
-local function is_available(plugin)
-    local lazy_config_avail, lazy_config = pcall(require, "lazy.core.config")
-    return lazy_config_avail and lazy_config.spec.plugins[plugin] ~= nil
-end
-
 vim.api.nvim_create_augroup('lsp#', { clear = true })
 vim.api.nvim_create_autocmd('LspAttach', {
     group = "lsp#",
     callback = function(ev)
+        vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
         local map = function(keys, func, desc)
             vim.keymap.set('n', keys, func, { buffer = ev.buf, desc = 'LSP: ' .. desc })
         end
 
-        if is_available 'telescope.nvim' then
-            local ts = require("telescope.builtin")
-            map('gd', ts.lsp_definitions, '[G]oto [D]efinition')
-            map('gD', ts.lsp_type_definitions, 'Type [D]efinition')
-            map('gri', ts.lsp_implementations, 'Goto Implementation')
-            map('grr', ts.lsp_references, 'Goto References')
-            map('<leader>ws', ts.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-            map('gO', ts.lsp_document_symbols, 'Document Symbols')
-        else
-            map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-            map('gD', vim.lsp.buf.type_definition, 'Type [D]efinition')
-            --gri map('gi', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-            --grr map('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
-        end
+        map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+        map('gD', vim.lsp.buf.type_definition, 'Type [D]efinition')
+        --gri map('gi', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+        --grr map('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
 
         map('K', vim.lsp.buf.hover, 'Hover Document')
         --CTRL-S map('<C-k>', vim.lsp.buf.signature_help, 'Signature Help')
@@ -35,19 +22,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
         map('<leader>sf', vim.lsp.buf.format, '[S]ave [F]ormat')
 
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
-        if client and client:supports_method('textDocument/docuemntHightlight') and client.server_capabilities.documentHighlightProvider then
-            -- local group = vim.api.nvim_create_augroup("LSPDocumentHighlight", {})
-            -- vim.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-            --     group = group,
-            --     buffer = ev.buf,
-            --     callback = vim.lsp.buf.document_highlight,
-            -- })
-            -- vim.api.nvim_create_autocmd({ "CursorMoved" }, {
-            --     group = group,
-            --     buffer = ev.buf,
-            --     callback = vim.lsp.buf.clear_references,
-            -- })
-        end
         -- Inlay Hints
         if client and client:supports_method('textDocument/inlayHint') then
             vim.keymap.set("n", "yoh", function()
@@ -103,11 +77,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
                 client.server_capabilities.completionProvider.triggerCharacters = { ".", ":" }
             end
             vim.lsp.completion.enable(true, ev.data.client_id, ev.buf, { autotrigger = true })
-        end
-
-        -- Document Colors
-        if client and client:supports_method("textDocument/documentColor") then
-            vim.lsp.document_color.enable(true, ev.buf, { style = "virtual" })
         end
     end,
 })

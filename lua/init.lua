@@ -1,17 +1,5 @@
 require("core")
 
-local function try_require(name, notify)
-    local ok, pkg = pcall(require, name)
-    if (not ok) and notify then
-        local msg = string.format(
-            'The package(`%s`) is not loaded successfully.', name
-        )
-        vim.notify(msg, vim.log.levels.ERROR)
-    end
-
-    return pkg
-end
-
 function Echo(str)
     vim.cmd "redraw"
     vim.api.nvim_echo({ { str, "Bold" } }, true, {})
@@ -42,7 +30,7 @@ if vim.g.vscode then
 else
     require('lazy').setup({
         spec = {
-            { import = "plugins_" },
+            { import = "plugins" },
         }
     })
     require('core/lspconfig')
