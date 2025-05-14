@@ -6,10 +6,12 @@ vim.lsp.config("*", {
         local map = function(keys, func, desc)
             vim.keymap.set('n', keys, func, { buffer = buf, desc = 'LSP: ' .. desc })
         end
+
         map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
         map('gD', vim.lsp.buf.type_definition, 'Type [D]efinition')
         map('K', vim.lsp.buf.hover, 'Hover Document')
         map('gsf', vim.lsp.buf.format, '[S]ave [F]ormat')
+
         -- Inlay Hints
         if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, buf) then
             vim.keymap.set("n", "yoh", function()
@@ -71,5 +73,8 @@ vim.lsp.config("*", {
         --     end
         --     vim.lsp.completion.enable(true, client.id, buf, { autotrigger = true })
         -- end
-    end
+    end,
+    root_markers = {
+        ".git"
+    }
 })
