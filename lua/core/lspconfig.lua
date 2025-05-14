@@ -1,19 +1,7 @@
 vim.lsp.enable({ "lua_ls", "golangci_lint_ls", "gopls", "pyright" })
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities({}, false))
-
-capabilities = vim.tbl_deep_extend('force', capabilities, {
-    textDocument = {
-        foldingRange = {
-            dynamicRegistration = false,
-            lineFoldingOnly = true
-        }
-    }
-})
-
 vim.lsp.config("*", {
-    capabilities = capabilities,
+    capabilities = require('blink.cmp').get_lsp_capabilities(),
     on_attach = function(client, buf)
         local map = function(keys, func, desc)
             vim.keymap.set('n', keys, func, { buffer = buf, desc = 'LSP: ' .. desc })
@@ -76,11 +64,12 @@ vim.lsp.config("*", {
             })
         end
 
-        if client:supports_method(vim.lsp.protocol.Methods.textDocument_completion, buf) then
-            if client.name == "lua-language-server" then
-                client.server_capabilities.completionProvider.triggerCharacters = { ".", ":" }
-            end
-            vim.lsp.completion.enable(true, client.id, buf, { autotrigger = true })
-        end
+        -- use blink.cmp
+        -- if client:supports_method(vim.lsp.protocol.Methods.textDocument_completion, buf) then
+        --     if client.name == "lua-language-server" and client.name == "pyright" then
+        --         client.server_capabilities.completionProvider.triggerCharacters = { ".", ":" }
+        --     end
+        --     vim.lsp.completion.enable(true, client.id, buf, { autotrigger = true })
+        -- end
     end
 })
