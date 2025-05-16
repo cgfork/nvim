@@ -3,7 +3,10 @@ return {
     dependencies = { 'rafamadriz/friendly-snippets' },
     version = '1.*',
     opts = {
-        keymap = { preset = 'default' },
+        keymap = {
+            preset = 'default',
+            ["<CR>"] = { "select_and_accept", "fallback" },
+        },
         appearance = {
             nerd_font_variant = 'mono',
             kind_icons = {
