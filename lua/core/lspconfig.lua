@@ -1,4 +1,4 @@
-vim.lsp.enable({ "lua_ls", "golangci_lint_ls", "gopls", "pyright" })
+vim.lsp.enable({ "lua_ls", "golangci_lint_ls", "gopls", "pyright", "zls" })
 
 vim.lsp.config("*", {
     capabilities = require('blink.cmp').get_lsp_capabilities(),
@@ -14,9 +14,9 @@ vim.lsp.config("*", {
 
         -- Inlay Hints
         if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, buf) then
-            vim.keymap.set("n", "yoh", function()
+            map("grl", function()
                 vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = buf }), { bufnr = buf })
-            end, { buffer = buf, desc = "Toggle inlay hints" })
+            end, "Toggle inlay hints")
         end
 
         if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, buf) then
