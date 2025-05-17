@@ -44,7 +44,7 @@ return {
         },
         completion = {
             documentation = {
-                auto_show = false,
+                auto_show = true,
                 auto_show_delay_ms = 500,
                 treesitter_highlighting = true,
             },
@@ -78,7 +78,7 @@ return {
                     treesitter = {
                         "lsp"
                     },
-                    columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1 } },
+                    columns = { { 'kind_icon' }, { 'label', 'label_description', gap = 1 }, { "source_name" } },
                 }
             }
         },
