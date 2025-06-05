@@ -1,4 +1,4 @@
-vim.lsp.enable({ "lua_ls", "golangci_lint_ls", "gopls", "pyright", "zls", "rust_analyzer" })
+vim.lsp.enable({ "lua_ls", "golangci_lint_ls", "gopls", "pyright", "zls", "rust_analyzer", "vue_ls", "ts_ls" })
 
 
 local function on_attach(client, buf)
