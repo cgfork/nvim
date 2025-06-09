@@ -56,21 +56,40 @@ return {
                 ['ui-select'] = {
                     require('telescope.themes').get_dropdown(),
                 },
+                aerial = {
+                    -- Set the width of the first two columns (the second
+                    -- is relevant only when show_columns is set to 'both')
+                    col1_width = 4,
+                    col2_width = 30,
+                    -- How to format the symbols
+                    format_symbol = function(symbol_path, filetype)
+                        if filetype == "json" or filetype == "yaml" then
+                            return table.concat(symbol_path, ".")
+                        else
+                            return symbol_path[#symbol_path]
+                        end
+                    end,
+                    -- Available modes: symbols, lines, both
+                    show_columns = "both",
+                }
             },
         }
         require("telescope").load_extension('project')
         require("telescope").load_extension('harpoon')
         require("telescope").load_extension('fzf')
+        require("telescope").load_extension('aerial')
         local telescope_builtin = require('telescope.builtin')
         vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, { desc = '[F]ind [F]iles' })
         vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, { desc = '[F]ind by [G]rep' })
         vim.keymap.set('n', '<leader>fa', ":lua require 'telescope'.extensions.live_grep_args.live_grep_args()<CR>",
             { noremap = true, desc = '[F]ind by Grep with [A]rgs' })
+        vim.keymap.set('n', '<leader>fs', ":lua require('telescope').extensions.aerial.aerial()<CR>",
+            { noremap = true, desc = '[F]ind [S]ymbols' })
         vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, { desc = '[F]ind [B]uffers' })
         vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, { desc = '[F]ind [H]elp' })
         vim.keymap.set('n', '<leader>fw', telescope_builtin.grep_string, { desc = '[F]ind by current [W]ord' })
         vim.keymap.set('n', '<leader>fk', telescope_builtin.keymaps, { desc = '[F]ind [K]eymaps' })
-        vim.keymap.set('n', '<leader>fs', telescope_builtin.builtin, { desc = '[F]ind [S]elect Telescope' })
+        vim.keymap.set('n', '<leader>ft', telescope_builtin.builtin, { desc = '[F]ind Select [T]elescope' })
         vim.keymap.set('n', '<leader>fd', telescope_builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
         vim.keymap.set('n', '<leader>fp',
             ":lua require'telescope'.extensions.project.project{ display_type = full}<CR>",
