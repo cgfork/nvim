@@ -19,7 +19,17 @@ return {
                 "html",
                 "json",
                 "python",
-                "proto"
+                "proto",
+                "markdown",
+                "zig",
+                "gomod",
+                "gosum",
+                "yaml",
+                "xml",
+                "toml",
+                "typescript",
+                "javascript",
+                "vue",
             },
             highlight = {
                 enable = true,
