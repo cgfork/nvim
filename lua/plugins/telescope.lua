@@ -91,6 +91,7 @@ return {
         vim.keymap.set('n', '<leader>fk', telescope_builtin.keymaps, { desc = '[F]ind [K]eymaps' })
         vim.keymap.set('n', '<leader>ft', telescope_builtin.builtin, { desc = '[F]ind Select [T]elescope' })
         vim.keymap.set('n', '<leader>fd', telescope_builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
+        vim.keymap.set('n', '<leader>fq', '<cmd>Telescope quickfix<CR>', { desc = '[F]ind [Q]uickfix' })
         vim.keymap.set('n', '<leader>fp',
             ":lua require'telescope'.extensions.project.project{ display_type = full}<CR>",
             { noremap = true, silent = true, desc = '[F]ind [P]rojects' })
