@@ -15,8 +15,6 @@ return {
         },
         "nvim-telescope/telescope-project.nvim",
         "nvim-telescope/telescope-live-grep-args.nvim",
-        "nvim-telescope/telescope-ui-select.nvim",
-        "ThePrimeagen/harpoon",
 
     },
     config = function()
@@ -53,9 +51,6 @@ return {
                     override_file_sorter = true,
                     case_mode = "smart_case",
                 },
-                ['ui-select'] = {
-                    require('telescope.themes').get_dropdown(),
-                },
                 aerial = {
                     -- Set the width of the first two columns (the second
                     -- is relevant only when show_columns is set to 'both')
@@ -75,7 +70,6 @@ return {
             },
         }
         require("telescope").load_extension('project')
-        require("telescope").load_extension('harpoon')
         require("telescope").load_extension('fzf')
         require("telescope").load_extension('aerial')
         local telescope_builtin = require('telescope.builtin')
