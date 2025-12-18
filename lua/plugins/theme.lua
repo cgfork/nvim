@@ -30,7 +30,16 @@ return {
 		end,
 	},
 	{
+		"rose-pine/neovim",
+		name = "rose-pine",
+		enabled = false,
+		config = function()
+			vim.cmd("colorscheme rose-pine-dawn")
+		end,
+	},
+	{
 		"overcache/NeoSolarized",
+		enabled = false,
 		config = function()
 			vim.cmd("set background=light")
 			vim.cmd("colorscheme NeoSolarized")
@@ -40,10 +49,10 @@ return {
 		"catppuccin/nvim",
 		name = "catppuccin",
 		priority = 1000,
-		enabled = false,
+		enabled = true,
 		config = function()
 			require("catppuccin").setup({
-				flavor = "mocha",
+				flavor = "auto",
 				default_integrations = false,
 				integrations = {
 					blink_cmp = true,
@@ -73,7 +82,7 @@ return {
 				term_colors = true,
 				transparent_background = true,
 			})
-			vim.cmd.colorscheme("catppuccin")
+			vim.cmd.colorscheme("catppuccin-latte")
 		end,
 	},
 }
