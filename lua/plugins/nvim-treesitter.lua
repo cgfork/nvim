@@ -1,42 +1,15 @@
 return {
-	"nvim-treesitter/nvim-treesitter",
-	branch = "master",
-	build = function()
-		local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
-		ts_update()
-	end,
+	"romus204/tree-sitter-manager.nvim",
+	dependencies = {}, -- tree-sitter CLI must be installed system-wide
 	config = function()
-		require("nvim-treesitter.configs").setup({
-			ensure_installed = {
-				"c",
-				"cpp",
-				"lua",
-				"vim",
-				"go",
-				"rust",
-				"bash",
-				"c_sharp",
-				"css",
-				"html",
-				"json",
-				"python",
-				"proto",
-			},
-			highlight = {
-				enable = true,
-				additional_vim_regex_highlighting = false,
-			},
-		})
-
-		require("nvim-treesitter").setup({})
-
-		vim.api.nvim_create_autocmd({ "BufEnter", "BufAdd", "BufNew", "BufNewFile", "BufWinEnter" }, {
-			group = vim.api.nvim_create_augroup("TsFoldWorkaround", {}),
-			callback = function()
-				vim.opt.foldmethod = "expr"
-				vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-				vim.opt.foldenable = false
-			end,
+		require("tree-sitter-manager").setup({
+			-- Default Options
+			-- ensure_installed = {}, -- list of parsers to install at the start of a neovim session. If set to "all", install all parsers.
+			-- border = nil, -- border style for the window (e.g. "rounded", "single"), if nil, use the default border style defined by 'vim.o.winborder'. See :h 'winborder' for more info.
+			-- auto_install = false, -- if enabled, install missing parsers when editing a new file
+			auto_install = true,
+			-- highlight = true, -- treesitter highlighting is enabled by default
+			-- languages = {}, -- override or add new parser sources
 		})
 	end,
 }
