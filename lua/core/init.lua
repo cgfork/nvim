@@ -11,6 +11,12 @@ vim.bo.autoread = true
 vim.o.backup = false
 vim.o.swapfile = false
 
+-- Trigger checktime to refresh buffers when focus changes or entering a buffer
+vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGained" }, {
+	command = "if mode() != 'c' | checktime | endif",
+	pattern = "*",
+})
+
 -- Clipboard
 vim.opt.clipboard = "unnamedplus" -- use system clipboard
 -- vim.opt.completeopt = { 'menu', 'menuon', 'noselect' }
@@ -103,4 +109,3 @@ vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-
