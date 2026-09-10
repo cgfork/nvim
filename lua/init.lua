@@ -40,3 +40,7 @@ else
 	})
 	require("core/lspconfig")
 end
+
+if vim.g.neovide then
+	vim.o.guifont = "DejavuSansM Nerd Font:h10"
+end
