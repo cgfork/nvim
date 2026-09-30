@@ -18,28 +18,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGai
 })
 
 -- Clipboard
-local osc52 = require("vim.ui.clipboard.osc52")
-vim.g.clipboard = {
-	name = "OSC 52",
-	copy = {
-		["+"] = function(lines, regtype)
-			osc52.copy("+")(lines, regtype)
-		end,
-		["*"] = function(lines, regtype)
-			osc52.copy("*")(lines, regtype)
-		end,
-	},
-	-- 关键：将 paste 设为空函数，阻止 Neovim 去请求终端剪贴板，彻底消除卡顿
-	paste = {
-		["+"] = function()
-			return {}
-		end,
-		["*"] = function()
-			return {}
-		end,
-	},
-}
-
 vim.opt.clipboard = "unnamedplus" -- use system clipboard
 -- vim.opt.completeopt = { 'menu', 'menuon', 'noselect' }
 vim.opt.mouse = "a" -- allow the mouse to be used in nvim
