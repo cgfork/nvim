@@ -18,6 +18,33 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGai
 })
 
 -- Clipboard
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+	local function dummy_paste()
+		-- 返回空，拒绝让远程通过 OSC 52 读取 Mac 的剪贴板，彻底消除卡顿超时
+		return { {}, "" }
+	end
+	vim.g.clipboard = {
+		name = "SSH Network Clipboard (OSC52 + NC)",
+		copy = {
+			-- 复制时：使用高效的内置 OSC 52 将内容传回 Mac 本地
+			["+"] = function(lines, regtype)
+				require("vim.ui.clipboard.osc52").copy("+")(lines, regtype)
+			end,
+			["*"] = function(lines, regtype)
+				require("vim.ui.clipboard.osc52").copy("*")(lines, regtype)
+			end,
+		},
+		paste = {
+			-- 粘贴时：通过 nc 从 Mac 转发的端口瞬间读取，支持远程无卡顿使用 p 键
+			-- -w 1 设置 1 秒超时，万一没开转发也不会导致 Nvim 死锁
+			-- ["+"] = "nc -w 1 127.0.0.1 2222",
+			-- ["*"] = "nc -w 1 127.0.0.1 2222",
+			["+"] = dummy_paste,
+			["*"] = dummy_paste,
+		},
+		cache_enabled = 1,
+	}
+end
 vim.opt.clipboard = "unnamedplus" -- use system clipboard
 -- vim.opt.completeopt = { 'menu', 'menuon', 'noselect' }
 vim.opt.mouse = "a" -- allow the mouse to be used in nvim
