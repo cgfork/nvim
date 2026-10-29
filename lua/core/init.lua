@@ -18,7 +18,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGai
 })
 
 -- Clipboard
-if vim.env.SSH_TTY or vim.env.SSH_CONNECTION then
+if vim.env.SSH_TTY or vim.env.SSH_CONNECTION and not vim.env.TMUX then
 	local function dummy_paste()
 		-- 返回空，拒绝让远程通过 OSC 52 读取 Mac 的剪贴板，彻底消除卡顿超时
 		return { {}, "" }
